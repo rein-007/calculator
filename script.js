@@ -20,8 +20,9 @@ btn.forEach((button) => {
         btnText = button.textContent;
         console.log(btnClick);
         if (btnClick==='operate') {
+            resultText.textContent = result;
             if (operators==true) {
-                resultText.textContent = result;
+                
                 btnClick = 'special';
                 btnClass = 'equals';
                 specialBtn();
@@ -42,7 +43,7 @@ btn.forEach((button) => {
             }
             // result = resultText.textContent;
             equal = false;
-            operators = false;
+            // operators = false;
             console.log(resultText.textContent);
             console.log(typeof(resultText.textContent));
         } else if (btnClick==='special') {
