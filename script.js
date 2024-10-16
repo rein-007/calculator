@@ -37,8 +37,7 @@ btn.forEach((button) => {
                 resultText.textContent = 0;
             }
             equal = false;
-        }
-        if (btnClick==='special') {
+        } else if (btnClick==='special') {
             if (button.className==='clear') {
                 resultText.textContent = 0;
                 num1 = 0;
