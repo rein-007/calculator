@@ -1,58 +1,72 @@
 const btn = document.querySelectorAll('button');
-let btnClick = '';
-let btnClass = '';
-let btnText = '';
+let resultCalc = document.querySelector('.result-calc');
 let resultText = document.querySelector('.result-text');
+let btnID = null;
+let btnClass = null;
+let btnText = null;
 let num1 = 0;
 let num2 = 0;
 let result = 0;
-let operator = '';
+let operator = null;
+let operatorText = null;
 let operators = false;
 let equal = false;
 
-btn.forEach((button) => {
+btn.forEach(button => {
     button.addEventListener('click', () => {
-        btnClick = button.id;
+        btnID = button.id;
         btnClass = button.className;
         btnText = button.textContent;
-        console.log(btnClick);
-        if (btnClick==='operate') {            
-            if (operators==true) {
-                
-                btnClick = 'special';
-                btnClass = 'equals';
-                specialBtn();
-            } else {
-                operators = true;
-                operator = btnClass;
-                resultText.textContent = result;
-            }
-        } else if (btnClick==='num') {
-            // console.log(btnText);
-            if (resultText.textContent==0) {
-                resultText.textContent = btnText;
-            } else {
-                resultText.textContent = resultText.textContent.concat(btnText);
-            }
-            (operators==true || equal==true) ? num2 = Number(resultText.textContent)
-             : num1 = Number(resultText.textContent);
-            
-            // if (equal==true) {
-            //     resultText.textContent = btnText;
-            // }
-            // result = resultText.textContent;
-            equal = false;
-            operators = false;
-            console.log(resultText.textContent);
-            console.log(typeof(resultText.textContent));
-        } else if (btnClick==='special') {
+        console.log(btnID);
+
+        if (btnID==='operate') {            
+            operatorBtn();
+        } else if (btnID==='num') {
+            numberBtn();
+        } else if (btnID==='special') {
             specialBtn();
         }
     });
 });
 
-function specialBtn () {
+function numberBtn() {
+    if (resultText.textContent==0) {
+        resultText.textContent = btnText;
+    } else {
+        resultText.textContent = resultText.textContent.concat(btnText);
+    }
+    // if (operators==true) {
+        num2 = Number(resultText.textContent)
+    // }
+    //  else {
+    //     num1 = Number(resultText.textContent);
+    // }
+    
+    console.log(resultText.textContent);
+    console.log(typeof(resultText.textContent));
+    console.log(num1);
+    console.log(num2);
+}
+
+function operatorBtn() {
+    if (operators==true) {
+        btnID = 'special';
+        btnClass = 'equals';
+        specialBtn();
+    } else {
+        operators = true;
+        operator = btnClass;
+        operatorText = btnText;
+        num1 = Number(resultText.textContent);
+        resultCalc.textContent = num1 + btnText;
+        console.log(num1);
+        console.log(num2);
+    }
+}
+
+function specialBtn() {
     if (btnClass==='clear') {
+        resultCalc.textContent = null;
         resultText.textContent = 0;
         num1 = 0;
         num2 = 0;
@@ -63,6 +77,7 @@ function specialBtn () {
         if (operators==true) {
             // const calc = new operate();
             operate(num1, operator, num2);
+            resultCalc.textContent = num1 + operatorText + num2 + btnText;
             resultText.textContent = result;
             console.log(operator);
             console.log(typeof(num1));
@@ -72,6 +87,8 @@ function specialBtn () {
             operators = false;
             equal = true;
             num1 = Number(result);
+            console.log(num1);
+            console.log(num2);
         }
     }
 }
