@@ -4,6 +4,9 @@ let resultText = document.querySelector('.result-text');
 let btnID = null;
 let btnClass = null;
 let btnText = null;
+let numClick = 0;
+let operatorClick = 0;
+let dotClick = 0;
 let num1 = 0;
 let num2 = 0;
 let result = 0;
@@ -17,7 +20,6 @@ btn.forEach(button => {
         btnID = button.id;
         btnClass = button.className;
         btnText = button.textContent;
-        console.log(btnID);
 
         if (btnID==='operate') {            
             operatorBtn();
@@ -30,25 +32,28 @@ btn.forEach(button => {
 });
 
 function numberBtn() {
-    if (resultText.textContent==0) {
-        resultText.textContent = btnText;
-    } else {
+    if (numClick>0 || dotClick>0) {
         resultText.textContent = resultText.textContent.concat(btnText);
+    } else if (resultText.textContent==0 || operators==true) {
+        resultText.textContent = btnText;
     }
-    // if (operators==true) {
+
+    if (operators==true) {
         num2 = Number(resultText.textContent)
-    // }
-    //  else {
-    //     num1 = Number(resultText.textContent);
-    // }
+    }
     
-    console.log(resultText.textContent);
-    console.log(typeof(resultText.textContent));
-    console.log(num1);
-    console.log(num2);
+    numClick+=1;
+    operatorClick = 0;
 }
 
 function operatorBtn() {
+    numClick = 0;
+    dotClick = 0;
+    if (operatorClick>0) {
+        operators = false;
+    }
+
+    operatorClick+=1;
     if (operators==true) {
         btnID = 'special';
         btnClass = 'equals';
@@ -59,8 +64,6 @@ function operatorBtn() {
         operatorText = btnText;
         num1 = Number(resultText.textContent);
         resultCalc.textContent = num1 + btnText;
-        console.log(num1);
-        console.log(num2);
     }
 }
 
@@ -73,23 +76,58 @@ function specialBtn() {
         result = 0;
         operators = false;
         equal = false;
+        numClick = 0;
+        operatorClick = 0;
+        dotClick = 0;
     } else if (btnClass==='equals') {
+        numClick = 0;
         if (operators==true) {
-            // const calc = new operate();
             operate(num1, operator, num2);
-            resultCalc.textContent = num1 + operatorText + num2 + btnText;
+            if (operatorClick>0) {
+                resultCalc.textContent = result + btnText;
+                operators = true;
+            } else {
+                resultCalc.textContent = num1 + operatorText + num2 + btnText;
+                operators = false;
+            }
             resultText.textContent = result;
-            console.log(operator);
-            console.log(typeof(num1));
-            console.log(typeof(num2));
-            console.log(resultText.textContent);
-            console.log(typeof(resultText.textContent));
-            operators = false;
             equal = true;
             num1 = Number(result);
-            console.log(num1);
-            console.log(num2);
         }
+
+        dotClick = 0;
+    } else if (btnClass==='dot') {
+        numClick = 0;
+        if (dotClick>0) {
+            return;
+        }
+
+        resultText.textContent = Number(resultText.textContent) + btnText;
+        dotClick+=1;
+    } else if (btnClass==='back') {
+        numClick+=1;
+        if (resultText.textContent===0) {
+            return;
+        }
+        
+        let lastCalc = resultCalc.textContent.substring(resultCalc.textContent.length - 1);
+        let lastText = resultText.textContent.substring(resultText.textContent.length - 1);
+        if (typeof(lastCalc) === 'string') {
+            resultCalc.textContent = resultCalc.textContent.slice(0,-1)
+            (lastCalc==='=') ? equal = false : operators = false;
+        }
+        
+        if (lastCalc==='') {
+            resultText.textContent = resultText.textContent.slice(0,-1);
+        }
+
+        if (Number(resultText.textContent) % 1 === 0) {
+            dotClick = 0;
+        }
+        console.log(lastCalc);
+        console.log(lastText);
+        console.log(btnText);
+        console.log(typeof(resultCalc.textContent.substring(resultCalc.textContent.length - 1)));
     }
 }
 
