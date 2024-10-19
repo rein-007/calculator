@@ -110,24 +110,29 @@ function specialBtn() {
             return;
         }
         
-        let lastCalc = resultCalc.textContent.substring(resultCalc.textContent.length - 1);
-        let lastText = resultText.textContent.substring(resultText.textContent.length - 1);
-        if (typeof(lastCalc) === 'string') {
-            resultCalc.textContent = resultCalc.textContent.slice(0,-1)
+        let lastCalc = '';
+        let lastText = resultText.textContent.at(-1);
+        let texts = '';
+        (resultCalc.textContent==='' || resultCalc.textContent===null || resultCalc.textContent===' ') 
+        ? lastCalc = resultCalc.textContent : lastCalc = resultCalc.textContent.at(-1);
+
+        if (lastCalc==='' || lastCalc===null || resultCalc.textContent===' ') {
+            texts = Number(resultText.textContent).slice(0,-1);
+            resultText.textContent = texts;
+        } else {
+            texts = resultCalc.textContent.slice(0,-1);
+            resultCalc.textContent = texts;
             (lastCalc==='=') ? equal = false : operators = false;
         }
         
-        if (lastCalc==='') {
-            resultText.textContent = resultText.textContent.slice(0,-1);
-        }
-
         if (Number(resultText.textContent) % 1 === 0) {
             dotClick = 0;
         }
         console.log(lastCalc);
         console.log(lastText);
-        console.log(btnText);
-        console.log(typeof(resultCalc.textContent.substring(resultCalc.textContent.length - 1)));
+        console.log(texts);
+        console.log(resultCalc.textContent);
+        console.log(resultText.textContent);
     }
 }
 
