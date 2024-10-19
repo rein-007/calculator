@@ -126,7 +126,6 @@ function specialBtn() {
         }
         console.log(lastCalc);
         console.log(lastText);
-        console.log(btnText);
         console.log(typeof(resultCalc.textContent.substring(resultCalc.textContent.length - 1)));
     }
 }
