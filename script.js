@@ -11,6 +11,7 @@ let num1 = 0;
 let num2 = 0;
 let result = 0;
 let operator = null;
+let operatorTmp = null;
 let operatorText = null;
 let operators = false;
 let equal = false;
@@ -49,11 +50,8 @@ function numberBtn() {
 function operatorBtn() {
     numClick = 0;
     dotClick = 0;
-    if (operatorClick>0) {
-        operators = false;
-    }
+    operatorTmp = btnClass;
 
-    operatorClick+=1;
     if (operators==true) {
         btnID = 'special';
         btnClass = 'equals';
@@ -65,30 +63,38 @@ function operatorBtn() {
         num1 = Number(resultText.textContent);
         resultCalc.textContent = num1 + btnText;
     }
+
+    operatorClick+=1;
+    operator = operatorTmp;
+    operatorText = btnText;
 }
 
 function specialBtn() {
     if (btnClass==='clear') {
         resultCalc.textContent = null;
-        resultText.textContent = 0;
-        num1 = 0;
-        num2 = 0;
-        result = 0;
-        operators = false;
-        equal = false;
+        resultText.textContent = 0;       
+        btnID = null;
+        btnClass = null;
+        btnText = null;
         numClick = 0;
         operatorClick = 0;
         dotClick = 0;
+        num1 = 0;
+        num2 = 0;
+        result = 0;
+        operator = null;
+        operatorTmp = null;
+        operatorText = null;
+        operators = false;
+        equal = false;
     } else if (btnClass==='equals') {
         numClick = 0;
         if (operators==true) {
             operate(num1, operator, num2);
             if (operatorClick>0) {
                 resultCalc.textContent = result + btnText;
-                operators = true;
             } else {
                 resultCalc.textContent = num1 + operatorText + num2 + btnText;
-                operators = false;
             }
             resultText.textContent = result;
             equal = true;
@@ -105,34 +111,30 @@ function specialBtn() {
         resultText.textContent = Number(resultText.textContent) + btnText;
         dotClick+=1;
     } else if (btnClass==='back') {
-        numClick+=1;
         if (resultText.textContent===0) {
             return;
         }
         
         let lastCalc = '';
-        let lastText = resultText.textContent.at(-1);
-        let texts = '';
-        (resultCalc.textContent==='' || resultCalc.textContent===null || resultCalc.textContent===' ') 
+        (resultCalc.textContent===' ') 
         ? lastCalc = resultCalc.textContent : lastCalc = resultCalc.textContent.at(-1);
 
-        if (lastCalc==='' || lastCalc===null || resultCalc.textContent===' ') {
-            texts = Number(resultText.textContent).slice(0,-1);
-            resultText.textContent = texts;
+        if (lastCalc===' ' || numClick>0) {
+            if (resultText.textContent.length===1) {
+                resultText.textContent = '';
+            } else {
+                resultText.textContent = resultText.textContent.slice(0,-1);
+            }
         } else {
-            texts = resultCalc.textContent.slice(0,-1);
-            resultCalc.textContent = texts;
+            resultCalc.textContent = resultCalc.textContent.slice(0,-1);
             (lastCalc==='=') ? equal = false : operators = false;
         }
         
         if (Number(resultText.textContent) % 1 === 0) {
             dotClick = 0;
         }
-        console.log(lastCalc);
-        console.log(lastText);
-        console.log(texts);
-        console.log(resultCalc.textContent);
-        console.log(resultText.textContent);
+
+        numClick+=1;
     }
 }
 
@@ -149,7 +151,5 @@ function operate(num1, operator, num2) {
             break;
         case 'divide':
             result = num1 / num2;
-        default:
-            alert('No operator selected!');
     }
 }

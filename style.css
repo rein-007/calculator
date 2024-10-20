@@ -30,7 +30,6 @@ body {
 .result-calc, .result-text {
     text-align: right;
     margin: 0 5px;
-    /* border: 1px solid; */
 }
 
 .result-calc {
@@ -90,15 +89,4 @@ button:hover {
     background: red;
     color: white;
     clip-path: polygon(30% 0, 100% 0, 100% 100%, 30% 100%, 0 50%);
-}
-
-.numbers {
-    /* flex-direction: row; */
-    /* border: 1px solid; */
-}
-
-.opertaor {
-    /* flex-direction: column; */
-    /* border: 1px solid; */
-    /* place-self: center; */
 }
